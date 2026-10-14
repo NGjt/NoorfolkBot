@@ -1,0 +1,27 @@
+# NoorfolkBot - Cloudflare Workers 配置模板
+# 部署前把下面占位符换成你自己的值，然后 npx wrangler deploy
+
+name = "noorfolk-bot"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+# D1 数据库：先在 Cloudflare 后台建一个 D1，把 database_id 填进来
+[[d1_databases]]
+binding = "TG_BOT_DB"
+database_name = "relay-bot-db"
+database_id = "在这里填D1的ID"
+
+[vars]
+# 管理员的 Telegram 数字 ID，多个用英文逗号隔开
+ADMIN_IDS = "你的ID,协管的ID"
+# 管理群 ID（话题群），bot 必须已在群里且是管理员
+ADMIN_GROUP_ID = "-100xxxxxxxxxx"
+# Worker 访问地址，末尾不带斜杠
+WORKER_URL = "https://noorfolk-bot.你的子域名.workers.dev"
+# Cloudflare Turnstile 站点密钥（公开的 site key，不是 secret）
+TURNSTILE_SITE_KEY = "在这里填site key"
+
+# 以下三个是机密，用 wrangler secret put 设置，不要写在这里：
+#   npx wrangler secret put BOT_TOKEN                # @BotFather 拿到的 token
+#   npx wrangler secret put TELEGRAM_WEBHOOK_SECRET  # 随便生成一串随机字符
+#   npx wrangler secret put TURNSTILE_SECRET_KEY     # Turnstile 的 secret key
